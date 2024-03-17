@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ToDoDAO {
 
-    @Query("select * from ToDo where created < :startCreated order by created")
+    @Query("select * from ToDo where created < :startCreated order by created desc LIMIT :limit")
     fun getWithCreated(startCreated: Long, limit: Int): Flow<List<ToDo>>
 
     @Insert
-    suspend fun create(toDo: ToDo)
+    suspend fun create(toDo: ToDo): Long
 
     @Update
-    suspend fun update(toDo: ToDo)
+    suspend fun update(toDo: ToDo): Int
 
     @Delete
-    suspend fun delete(toDo: ToDo)
+    suspend fun delete(toDo: ToDo): Int
 }

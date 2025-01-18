@@ -27,7 +27,7 @@ class ToDoAdapter: ListAdapter<ToDo, ToDoAdapter.ViewHolder>(callbacks) {
     ): RecyclerView.ViewHolder(binding.root) {
         fun bindTo(todo: ToDo) {
             binding.titleText.text = todo.title
-            binding.createdText.text = DateFormat.format("yyyy-MM-dd hh:mm:ss", todo.created
+            binding.createdText.text = DateFormat.format("yyyy-MM-dd hh:mm:ss", todo.created)
         }
     }
 

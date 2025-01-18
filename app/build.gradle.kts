@@ -69,4 +69,7 @@ dependencies {
     // hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
     ksp("com.google.dagger:hilt-compiler:$hilt_version")
+
+    // recyclerview
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
 }

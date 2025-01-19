@@ -21,8 +21,17 @@ class MainFragment: Fragment(R.layout.main_fragment) {
         super.onViewCreated(view, savedInstanceState)
         this._binding = MainFragmentBinding.bind(view)
 
+        // RecyclerViewのadapterをセットする
+        val adapter = ToDoAdapter()
+        binding.recycler.adapter = adapter
+
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_createToDoFragment)
+        }
+
+        // LiveDataを監視
+        vm.todoList.observe(viewLifecycleOwner) { list ->
+            adapter.submitList(list)
         }
     }
 

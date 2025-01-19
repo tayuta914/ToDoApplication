@@ -13,6 +13,9 @@ interface ToDoDAO {
     @Query("select * from ToDo where created < :startCreated order by created desc LIMIT :limit")
     fun getWithCreated(startCreated: Long, limit: Int): Flow<List<ToDo>>
 
+    @Query("select * from ToDo order by created desc")
+    fun getAll(): Flow<List<ToDo>>
+
     @Insert
     suspend fun create(toDo: ToDo): Long
 

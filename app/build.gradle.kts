@@ -72,4 +72,6 @@ dependencies {
 
     // recyclerview
     implementation("androidx.recyclerview:recyclerview:1.4.0")
+
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 }

@@ -9,12 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.application.databinding.TodoItemBinding
 import com.example.todoapplication.model.todo.ToDo
 
-class ToDoAdapter: ListAdapter<ToDo, ToDoAdapter.ViewHolder>(callbacks) {
+class ToDoAdapter(
+    private val listener: (ToDo) -> Unit,
+) : ListAdapter<ToDo, ToDoAdapter.ViewHolder>(callbacks) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = TodoItemBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+
+        val viewHolder = ViewHolder(binding)
+        binding.root.setOnClickListener {
+            // 何番目の要素がタップされたかを指定
+            val position = viewHolder.bindingAdapterPosition
+            val todo = getItem(position)
+            listener(todo)
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -23,8 +33,8 @@ class ToDoAdapter: ListAdapter<ToDo, ToDoAdapter.ViewHolder>(callbacks) {
     }
 
     class ViewHolder(
-        private val binding: TodoItemBinding
-    ): RecyclerView.ViewHolder(binding.root) {
+        private val binding: TodoItemBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bindTo(todo: ToDo) {
             binding.titleText.text = todo.title
             binding.createdText.text = DateFormat.format("yyyy-MM-dd hh:mm:ss", todo.created)
@@ -32,7 +42,7 @@ class ToDoAdapter: ListAdapter<ToDo, ToDoAdapter.ViewHolder>(callbacks) {
     }
 
     companion object {
-        private  val callbacks = object: DiffUtil.ItemCallback<ToDo>() {
+        private val callbacks = object : DiffUtil.ItemCallback<ToDo>() {
             override fun areItemsTheSame(oldItem: ToDo, newItem: ToDo): Boolean {
                 // 同じアイテムかどうかを判別する
                 return oldItem._id == newItem._id

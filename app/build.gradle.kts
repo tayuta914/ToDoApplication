@@ -7,6 +7,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -71,7 +73,7 @@ dependencies {
     ksp("com.google.dagger:hilt-compiler:$hilt_version")
 
     // recyclerview
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 }

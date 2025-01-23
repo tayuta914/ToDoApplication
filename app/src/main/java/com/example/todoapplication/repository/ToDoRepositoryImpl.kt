@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class ToDoRepositoryImpl @Inject constructor (
-    private val dao: ToDoDAO
-): ToDoRepository {
+class ToDoRepositoryImpl @Inject constructor(
+    private val dao: ToDoDAO,
+) : ToDoRepository {
     override fun getAll(): Flow<List<ToDo>> {
         return dao.getAll()
     }
@@ -20,5 +20,22 @@ class ToDoRepositoryImpl @Inject constructor (
         withContext(Dispatchers.IO) {
             dao.create(todo)
         }
+    }
+
+    override suspend fun update(todo: ToDo, title: String, detail: String): ToDo {
+        // オブジェクトを作成し、Daoに渡す
+        val updateToDo =
+            ToDo(
+                _id = todo._id,
+                title = title,
+                detail = detail,
+                created = todo.created,
+                modified = System.currentTimeMillis()
+            )
+        // 例外を投げるため、I/Oスレッドで処理
+        withContext(Dispatchers.IO) {
+            dao.update(updateToDo)
+        }
+        return updateToDo
     }
 }

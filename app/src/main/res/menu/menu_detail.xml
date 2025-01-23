@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_edit"
         android:icon="@drawable/baseline_edit_24"
+        android:iconTint="@android:color/white"
         android:title="Edit"
         app:showAsAction="always"/>
 </menu>

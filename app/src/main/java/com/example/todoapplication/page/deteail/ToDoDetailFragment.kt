@@ -1,5 +1,6 @@
 package com.example.todoapplication.page.deteail
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.application.R
 import com.example.application.databinding.TodoDetailFragmentBinding
 import com.example.todoapplication.model.todo.ToDo
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +33,12 @@ class ToDoDetailFragment : Fragment(R.layout.todo_detail_fragment) {
             val todo: ToDo = data.getParcelable("todo")!!
             vm.todo.value = todo
         }
+        setFragmentResultListener("confirm") { _, data ->
+            val which = data.getInt("result")
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                vm.delete()
+            }
+        }
         if (savedInstanceState == null) {
             vm.todo.value = args.todo
         }
@@ -44,6 +52,19 @@ class ToDoDetailFragment : Fragment(R.layout.todo_detail_fragment) {
         vm.todo.observe(viewLifecycleOwner) { todo ->
             binding.titleText.text = todo.title
             binding.detailText.text = todo.detail
+        }
+        vm.errorMessage.observe(viewLifecycleOwner) { msg ->
+            Snackbar.make(requireView(), msg, Snackbar.LENGTH_SHORT).show()
+            vm.errorMessage.value = ""
+        }
+        vm.deleted.observe(viewLifecycleOwner) { deleted ->
+            if (deleted) {
+                // 第２引数なしだとダイアログを閉じるだけになる
+                findNavController().popBackStack(
+                    R.id.mainFragment,
+                    false
+                )
+            }
         }
     }
 
@@ -68,6 +89,11 @@ class ToDoDetailFragment : Fragment(R.layout.todo_detail_fragment) {
                         vm.todo.value!!
                     )
                 findNavController().navigate(action)
+                true
+            }
+
+            R.id.action_delete -> {
+                findNavController().navigate(R.id.action_toDoDetailFragment_to_confirmDialogFragment)
                 true
             }
 

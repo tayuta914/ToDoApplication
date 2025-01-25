@@ -8,6 +8,7 @@ interface ToDoRepository {
     fun getAll(): Flow<List<ToDo>>
     suspend fun create(title: String, detail: String)
 
-    // 更新処理は時間がかかる処理のため、メソッドにsuspendをつける
+    // 更新、削除処理は時間がかかる処理のため、メソッドにsuspendをつける
     suspend fun update(todo: ToDo, title: String, detail: String): ToDo
+    suspend fun delete(todo: ToDo)
 }
